@@ -10,6 +10,7 @@ const DB = process.env.DATABASE.replace(
 );
 
 mongoose.set('strictQuery', false);
+// ⤴️ if set true, will check for queries provided in the schema and ignore everything else.
 
 mongoose.connect(DB, () => {
   console.log(
