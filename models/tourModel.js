@@ -8,6 +8,8 @@ const tourSchema = new mongoose.Schema(
       required: [true, `A tour must have a name.`],
       unique: true,
       trim: true,
+      maxlength: [40, `A tour must have less than or equal to 40 characters.`],
+      minlength: [10, `A tour must have more than 10 characters.`],
     },
     slug: String,
     difficulty: {
@@ -48,6 +50,8 @@ const tourSchema = new mongoose.Schema(
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      min: [1, `The rating should be minimum 1.0.`],
+      max: [5, `The rating should be below 5.0.`],
     },
     summary: {
       type: String,
@@ -79,7 +83,6 @@ tourSchema.pre('save', function (next) {
 // QUERY MIDDLEWARE: can be used to define some private tours.
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } }); // exclude showing the tour that has secretTour set to true for all queries starting with find.
-  this.start = Date.now();
   next();
 });
 
